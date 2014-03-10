@@ -61,7 +61,7 @@ int main( void )
 	// Enable depth test
 	glEnable(GL_DEPTH_TEST);
 	// Accept fragment if it closer to the camera than the former one
-	glDepthFunc(GL_LESS); 
+	glDepthFunc(GL_LESS);
 
 	// Cull triangles which normal is not towards the camera
 	glEnable(GL_CULL_FACE);
@@ -80,7 +80,7 @@ int main( void )
 
 	// Load the texture
 	GLuint Texture = loadDDS("uvmap.DDS");
-	
+
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
@@ -88,8 +88,13 @@ int main( void )
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
 
+	std::vector<glm::vec3> fl_vertices;
+	std::vector<glm::vec2> fl_uvs;
+	std::vector<glm::vec3> fl_normals;
+//	bool res = loadOBJ("suzanne.obj", vertices, uvs, normals);
+	bool fl = loadOBJ("Bevel Floor.obj", vertices, uvs, normals);
+//    uvs.clear();
 	// Load it into a VBO
 
 	GLuint vertexbuffer;
@@ -116,7 +121,7 @@ int main( void )
 		// Clear the screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Use our shader
+		// Use our shadoginer
 		glUseProgram(programID);
 
 		// Compute the MVP matrix from keyboard and mouse input
@@ -126,7 +131,7 @@ int main( void )
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
-		// Send our transformation to the currently bound shader, 
+		// Send our transformation to the currently bound shader,
 		// in the "MVP" uniform
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
